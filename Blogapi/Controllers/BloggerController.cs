@@ -99,10 +99,20 @@ namespace Blogapi.Controllers
             {
                 using (var context = new BlogDbContext())
                 {
-                    var CountOfBloggersPosts = context.bloggers.Include(x => x.Posts).ToList();
+                    var countOfBloggersPosts = context.bloggers
+                        .Include(x => x.Posts)
+                        .ToList()
+                        .Select(x => new { Blogger = x.Name, Posts = x.Posts.Count() });
 
-                    var blogger = new { CountOfBloggersPosts.Count, Posts = CountOfBloggersPosts};
-                    return Ok(new { messaege = "Sikeres lekérdezés", result = blogger });
+
+
+                    if (countOfBloggersPosts == null)
+                    {
+
+                        return Ok(new { messaege = "Sikeres lekérdezés", result = countOfBloggersPosts });
+                    }
+
+                    return NotFound(new { message = "Sikertlen felvétel", result = countOfBloggersPosts });
                 }
             }
             catch (Exception ex)
