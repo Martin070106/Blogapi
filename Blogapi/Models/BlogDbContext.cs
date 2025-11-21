@@ -15,6 +15,7 @@ namespace Blogapi.Models
         }
 
         public DbSet<Blogger> bloggers { get; set; }
+        public DbSet<Post> posts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
